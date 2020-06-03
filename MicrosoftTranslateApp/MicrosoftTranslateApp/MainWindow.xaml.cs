@@ -91,7 +91,6 @@ namespace MicrosoftTranslateApp
             // Add option to automatically detect the source language
             FromLanguageComboBox.Items.Add("Detect");
 
-            int count = languageCodesAndTitles.Count;
             foreach (string menuItem in languageCodesAndTitles.Keys)
             {
                 FromLanguageComboBox.Items.Add(menuItem);
