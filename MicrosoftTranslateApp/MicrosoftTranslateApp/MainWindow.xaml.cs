@@ -41,14 +41,14 @@ namespace MicrosoftTranslateApp
             // Display a message if unexpected error is encountered
             AppDomain.CurrentDomain.UnhandledException += new UnhandledExceptionEventHandler(HandleExceptions);
 
-            if (COGNITIVE_SERVICES_KEY.Length != 32)
+            /*if (COGNITIVE_SERVICES_KEY.Length != 32)
             {
                 MessageBox.Show("One or more invalid API subscription keys.\n\n" +
                     "Put your keys in the *_API_SUBSCRIPTION_KEY variables in MainWindow.xaml.cs.",
                     "Invalid Subscription Key(s)", MessageBoxButton.OK, MessageBoxImage.Error);
                 System.Windows.Application.Current.Shutdown();
             }
-            else
+            else*/
             {
                 // Start GUI
                 InitializeComponent();
@@ -245,7 +245,7 @@ namespace MicrosoftTranslateApp
                 // handle null operations: no text or same source/target languages
                 if (textToTranslate == "" || fromLanguageCode == toLanguageCode)
                 {
-                    TranslatedTextLabel.Content = textToTranslate;
+                    TextTranslated.Text = textToTranslate;
                     return;
                 }
 
@@ -273,7 +273,7 @@ namespace MicrosoftTranslateApp
                     var translation = result[0]["translations"][0]["text"];
 
                     // Update the translation field
-                    TranslatedTextLabel.Content = translation;
+                    TextTranslated.Text = translation;
                 }
             }
             catch (Exception ex)

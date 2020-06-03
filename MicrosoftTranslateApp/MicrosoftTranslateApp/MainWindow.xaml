@@ -8,26 +8,48 @@
         Title="MindWave Translator" Height="400" Width="700" BorderThickness="0"
         ResizeMode="NoResize">
     <Grid>
-        <Label x:Name="label" Content="MindWave Translator" HorizontalAlignment="Left" Margin="39,6,0,0" VerticalAlignment="Top" Height="49" FontSize="26.667"/>
-        <TextBox x:Name="TextToTranslate" HorizontalAlignment="Left" Height="23" Margin="42,160,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="600" FontSize="14" TabIndex="3"/>
-        <Label x:Name="EnterTextLabel" Content="Text to translate:" HorizontalAlignment="Left" Margin="40,129,0,0" VerticalAlignment="Top" FontSize="14"/>
-        <Label x:Name="toLabel" Content="Translate to:" HorizontalAlignment="Left" Margin="304,58,0,0" VerticalAlignment="Top" FontSize="14"/>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="20*"></RowDefinition>
+            <RowDefinition Height="15*"></RowDefinition>
+            <RowDefinition Height="15*"></RowDefinition>
+            <RowDefinition Height="50*"></RowDefinition>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition></ColumnDefinition>
+            <ColumnDefinition></ColumnDefinition>
+        </Grid.ColumnDefinitions>
 
-        <Button x:Name="TranslateButton" Content="Translate" HorizontalAlignment="Left" Margin="39,206,0,0" VerticalAlignment="Top" Width="114" Height="31" Click="TranslateButton_Click" FontSize="14" TabIndex="4" IsDefault="True"/>
-        <ComboBox x:Name="ToLanguageComboBox"
-                HorizontalAlignment="Left"
-                Margin="306,88,0,0"
-                VerticalAlignment="Top"
-                Width="175" FontSize="14" TabIndex="2">
+        <Label x:Name="label" Content="MindWave Translator" HorizontalAlignment="Center" VerticalAlignment="Center"
+               FontSize="26.667" Grid.Column="0" Grid.Row="0"/>
 
-        </ComboBox>
-        <Label x:Name="fromLabel" Content="Translate from:" HorizontalAlignment="Left" Margin="40,58,0,0" VerticalAlignment="Top" FontSize="14"/>
-        <ComboBox x:Name="FromLanguageComboBox"
-            HorizontalAlignment="Left"
-            Margin="42,88,0,0"
-            VerticalAlignment="Top"
+        <StackPanel Grid.Column="0" Grid.Row="1">
+            <Label x:Name="fromLabel" Content="Translate from:" HorizontalAlignment="Center" VerticalAlignment="Center" 
+                   FontSize="14"/>
+            <ComboBox x:Name="FromLanguageComboBox"
+            HorizontalAlignment="Center"
+            VerticalAlignment="Center"
             Width="175" FontSize="14" TabIndex="1"/>
-        <Label x:Name="TranslatedTextLabel" Content="Translation is displayed here." HorizontalAlignment="Left" Margin="39,255,0,0" VerticalAlignment="Top" Width="620" FontSize="14" Height="85" BorderThickness="0"/>
-        <Label x:Name="DetectedLanguageLabel" Content="Autodetected language is displayed here." HorizontalAlignment="Left" Margin="39,288,0,0" VerticalAlignment="Top" Width="620" FontSize="14" Height="84" BorderThickness="0"/>
+        </StackPanel>
+        
+        <StackPanel Grid.Column="1" Grid.Row="1">
+            <Label x:Name="toLabel" Content="Translate to:" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="14"/>
+            <ComboBox x:Name="ToLanguageComboBox"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center"
+                Width="175" FontSize="14" TabIndex="2">
+            </ComboBox>
+        </StackPanel>
+
+        <StackPanel HorizontalAlignment="Center" Orientation="Horizontal" Grid.Column="0" Grid.Row="2">
+            <Button x:Name="TranslateButton" Content="Translate" HorizontalAlignment="Center"  VerticalAlignment="Center" Width="114" Height="31" Click="TranslateButton_Click" FontSize="14" TabIndex="4" IsDefault="True"/>
+            <Button x:Name="TranslateFileButton" Margin="10,0,0,0" Content="Translate file..." HorizontalAlignment="Center"  VerticalAlignment="Center" Width="114" Height="31" Click="TranslateButton_Click" FontSize="14" TabIndex="4" IsDefault="True"/>
+        </StackPanel>
+
+        <Label x:Name="DetectedLanguageLabel" Content="Autodetected language is displayed here." 
+               HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="14" BorderThickness="0"
+               Grid.Column="1" Grid.Row="2"/>
+
+        <TextBox x:Name="TextToTranslate" BorderBrush="Aqua" TextWrapping="Wrap" AcceptsReturn="True" Grid.Column="0" Grid.Row="3" />
+        <TextBox x:Name="TextTranslated" BorderBrush="OrangeRed" TextWrapping="Wrap" AcceptsReturn="True" Grid.Column="1" Grid.Row="3"/>
     </Grid>
 </Window>
