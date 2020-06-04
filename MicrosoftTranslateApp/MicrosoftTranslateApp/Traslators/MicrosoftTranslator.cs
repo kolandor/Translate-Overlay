@@ -26,9 +26,7 @@ namespace MicrosoftTranslateApp.Traslators
                 string uri = ApiUriCreator("languages", new Dictionary<string, string> { { "scope", "translation" } });
                 WebRequest WebRequest = WebRequest.Create(uri);
                 WebRequest.Headers.Add("Accept-Language", "en");
-                WebResponse response = null;
-                // Read and parse the JSON response
-                response = WebRequest.GetResponse();
+                WebResponse response = WebRequest.GetResponse();
                 using (var reader = new StreamReader(response.GetResponseStream(), UnicodeEncoding.UTF8))
                 {
                     var result = JsonConvert.DeserializeObject<Dictionary<string, Dictionary<string, Dictionary<string, string>>>>(reader.ReadToEnd());
@@ -44,7 +42,12 @@ namespace MicrosoftTranslateApp.Traslators
             }
         }
 
-        public string Translate(string codeFrom, string codeTo, string textToTranslate)
+        public string Translate(string sourceLang, string targetLang, string textToTranslate)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public string Translate(string targetLang, string textToTranslate)
         {
             throw new System.NotImplementedException();
         }
