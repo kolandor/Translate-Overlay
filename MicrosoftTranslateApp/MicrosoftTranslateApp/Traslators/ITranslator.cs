@@ -4,6 +4,9 @@ namespace MicrosoftTranslateApp.Traslators
 {
     public interface ITranslator
     {
+        /// <summary>
+        /// Languages list
+        /// </summary>
         SortedDictionary<string, string> Languages { get; }
 
         /// <summary>
