@@ -17,7 +17,7 @@ namespace MicrosoftTranslateApp.Traslators
         /// <param name="targetLang"></param>
         /// <param name="textToTranslate"></param>
         /// <returns></returns>
-        Task<string> Translate(string sourceLang, string targetLang, string textToTranslate);
+        string Translate(string sourceLang, string targetLang, string textToTranslate);
 
         /// <summary>
         /// Auto detect source language
@@ -25,6 +25,6 @@ namespace MicrosoftTranslateApp.Traslators
         /// <param name="targetLang"></param>
         /// <param name="textToTranslate"></param>
         /// <returns></returns>
-        Task<string> Translate(string targetLang, string textToTranslate);
+        string Translate(string targetLang, string textToTranslate);
     }
 }

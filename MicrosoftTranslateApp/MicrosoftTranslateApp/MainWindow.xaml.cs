@@ -7,6 +7,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Newtonsoft.Json;
+using MicrosoftTranslateApp.Traslators;
+using MicrosoftTranslateApp.resources;
 
 namespace MicrosoftTranslateApp
 {
@@ -15,14 +17,9 @@ namespace MicrosoftTranslateApp
     /// </summary>
     public partial class MainWindow : Window
     {
-        // This sample uses the Cognitive Services subscription key for all services. To learn more about
-        // authentication options, see: https://docs.microsoft.com/azure/cognitive-services/authentication.
-        const string COGNITIVE_SERVICES_KEY = "YOUR_KEY";
-        // Endpoints for Translator Text and Bing Spell Check
-        public static readonly string TEXT_TRANSLATION_API_ENDPOINT = "https://api.cognitive.microsofttranslator.com/{0}?api-version=3.0";
         const string BING_SPELL_CHECK_API_ENDPOINT = "https://westus.api.cognitive.microsoft.com/bing/v7.0/spellcheck/";
-        // An array of language codes
-        private string[] languageCodes;
+
+        MicrosoftTranslator translator;
 
         // Dictionary to map language codes from friendly name (sorted case-insensitively on language name)
         private SortedDictionary<string, string> languageCodesAndTitles =
@@ -52,44 +49,20 @@ namespace MicrosoftTranslateApp
             {
                 // Start GUI
                 InitializeComponent();
-                // Get languages for drop-downs
-                GetLanguagesForTranslate();
+
+                translator = new MicrosoftTranslator(Keys.CognitiveServicesKey);
+
                 // Populate drop-downs with values from GetLanguagesForTranslate
                 PopulateLanguageMenus();
             }
         }
-        // NOTE:
-        // In the following sections, we'll add code below this.
-
-        // ***** GET TRANSLATABLE LANGUAGE CODES
-        private void GetLanguagesForTranslate()
-        {
-            // Send request to get supported language codes
-            string uri = String.Format(TEXT_TRANSLATION_API_ENDPOINT, "languages") + "&scope=translation";
-            WebRequest WebRequest = WebRequest.Create(uri);
-            WebRequest.Headers.Add("Accept-Language", "en");
-            WebResponse response = null;
-            // Read and parse the JSON response
-            response = WebRequest.GetResponse();
-            using (var reader = new StreamReader(response.GetResponseStream(), UnicodeEncoding.UTF8))
-            {
-                var result = JsonConvert.DeserializeObject<Dictionary<string, Dictionary<string, Dictionary<string, string>>>>(reader.ReadToEnd());
-                var languages = result["translation"];
-
-                languageCodes = languages.Keys.ToArray();
-                foreach (var kv in languages)
-                {
-                    languageCodesAndTitles.Add(kv.Value["name"], kv.Key);
-                }
-            }
-        }
-        // NOTE:
-        // In the following sections, we'll add code below this.
-
+        
         private void PopulateLanguageMenus()
         {
             // Add option to automatically detect the source language
             FromLanguageComboBox.Items.Add("Detect");
+
+            languageCodesAndTitles = translator.Languages;
 
             foreach (string menuItem in languageCodesAndTitles.Keys)
             {
@@ -101,50 +74,7 @@ namespace MicrosoftTranslateApp
             FromLanguageComboBox.SelectedItem = "Detect";
             ToLanguageComboBox.SelectedItem = "English";
         }
-        // NOTE:
-        // In the following sections, we'll add code below this.
 
-        // ***** DETECT LANGUAGE OF TEXT TO BE TRANSLATED
-        private string DetectLanguage(string text)
-        {
-            string detectUri = string.Format(TEXT_TRANSLATION_API_ENDPOINT, "detect");
-
-            // Create request to Detect languages with Translator Text
-            HttpWebRequest detectLanguageWebRequest = (HttpWebRequest)WebRequest.Create(detectUri);
-            detectLanguageWebRequest.Headers.Add("Ocp-Apim-Subscription-Key", COGNITIVE_SERVICES_KEY);
-            detectLanguageWebRequest.Headers.Add("Ocp-Apim-Subscription-Region", "westeurope");
-            detectLanguageWebRequest.ContentType = "application/json; charset=utf-8";
-            detectLanguageWebRequest.Method = "POST";
-
-            // Send request
-            var serializer = new System.Web.Script.Serialization.JavaScriptSerializer();
-            string jsonText = serializer.Serialize(text);
-
-            string body = "[{ \"Text\": " + jsonText + " }]";
-            byte[] data = Encoding.UTF8.GetBytes(body);
-
-            detectLanguageWebRequest.ContentLength = data.Length;
-
-            using (var requestStream = detectLanguageWebRequest.GetRequestStream())
-                requestStream.Write(data, 0, data.Length);
-
-            HttpWebResponse response = (HttpWebResponse)detectLanguageWebRequest.GetResponse();
-
-            // Read and parse JSON response
-            var responseStream = response.GetResponseStream();
-            var jsonString = new StreamReader(responseStream, Encoding.GetEncoding("utf-8")).ReadToEnd();
-            dynamic jsonResponse = serializer.DeserializeObject(jsonString);
-
-            // Fish out the detected language code
-            var languageInfo = jsonResponse[0];
-            if (languageInfo["score"] > (decimal)0.5)
-            {
-                DetectedLanguageLabel.Content = languageInfo["language"];
-                return languageInfo["language"];
-            }
-            else
-                return "Unable to confidently detect input language.";
-        }
         // NOTE:
         // In the following sections, we'll add code below this.
 
@@ -204,31 +134,26 @@ namespace MicrosoftTranslateApp
         // In the following sections, we'll add code below this.
 
         // ***** PERFORM TRANSLATION ON BUTTON CLICK
-        private async void TranslateButton_Click(object sender, EventArgs e)
+        private void TranslateButton_Click(object sender, EventArgs e)
         {
             try
             {
                 string textToTranslate = TextToTranslate.Text.Trim();
-
+                string toLanguageCode = languageCodesAndTitles[ToLanguageComboBox.SelectedValue.ToString()];
                 string fromLanguage = FromLanguageComboBox.SelectedValue.ToString();
                 string fromLanguageCode;
 
                 // auto-detect source language if requested
                 if (fromLanguage == "Detect")
                 {
-                    fromLanguageCode = DetectLanguage(textToTranslate);
-                    if (!languageCodes.Contains(fromLanguageCode))
-                    {
-                        MessageBox.Show("The source language could not be detected automatically " +
-                            "or is not supported for translation.", "Language detection failed",
-                            MessageBoxButton.OK, MessageBoxImage.Error);
-                        return;
-                    }
+                    TextTranslated.Text = translator.Translate(toLanguageCode, textToTranslate);
                 }
                 else
-                    fromLanguageCode = languageCodesAndTitles[fromLanguage];
+                {
+                    TextTranslated.Text = translator.Translate(fromLanguage, toLanguageCode, textToTranslate);
+                }
 
-                string toLanguageCode = languageCodesAndTitles[ToLanguageComboBox.SelectedValue.ToString()];
+                
 
                 // spell-check the source text if the source language is English
                 /*if (fromLanguageCode == "en")
@@ -242,38 +167,6 @@ namespace MicrosoftTranslateApp
                     }
                 }*/
                 // handle null operations: no text or same source/target languages
-                if (textToTranslate == "" || fromLanguageCode == toLanguageCode)
-                {
-                    TextTranslated.Text = textToTranslate;
-                    return;
-                }
-
-                // send HTTP request to perform the translation
-                string endpoint = string.Format(TEXT_TRANSLATION_API_ENDPOINT, "translate");
-                string uri = string.Format(endpoint + "&from={0}&to={1}", fromLanguageCode, toLanguageCode);
-
-                System.Object[] body = new System.Object[] { new { Text = textToTranslate } };
-                var requestBody = JsonConvert.SerializeObject(body);
-
-                using (var client = new HttpClient())
-                using (var request = new HttpRequestMessage())
-                {
-                    request.Method = HttpMethod.Post;
-                    request.RequestUri = new Uri(uri);
-                    request.Content = new StringContent(requestBody, Encoding.UTF8, "application/json");
-                    request.Headers.Add("Ocp-Apim-Subscription-Key", COGNITIVE_SERVICES_KEY);
-                    request.Headers.Add("Ocp-Apim-Subscription-Region", "westeurope");
-                    request.Headers.Add("X-ClientTraceId", Guid.NewGuid().ToString());
-
-                    var response = await client.SendAsync(request);
-                    var responseBody = await response.Content.ReadAsStringAsync();
-
-                    var result = JsonConvert.DeserializeObject<List<Dictionary<string, List<Dictionary<string, string>>>>>(responseBody);
-                    var translation = result[0]["translations"][0]["text"];
-
-                    // Update the translation field
-                    TextTranslated.Text = translation;
-                }
             }
             catch (Exception ex)
             {

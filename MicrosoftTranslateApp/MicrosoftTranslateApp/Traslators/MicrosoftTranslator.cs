@@ -15,7 +15,7 @@ namespace MicrosoftTranslateApp.Traslators
         private const string TEXT_TRANSLATION_API_ENDPOINT = "https://api.cognitive.microsofttranslator.com/";
         private const string API_VERSION = "?api-version=3.0";
 
-        MicrosoftTranslator(string apiKey)
+        public MicrosoftTranslator(string apiKey)
         {
             API_KEY = apiKey;
         }
@@ -55,7 +55,7 @@ namespace MicrosoftTranslateApp.Traslators
         /// <param name="targetLang"></param>
         /// <param name="textToTranslate"></param>
         /// <returns></returns>
-        public async Task<string> Translate(string sourceLang, string targetLang, string textToTranslate)
+        public string Translate(string sourceLang, string targetLang, string textToTranslate)
         {
             if (string.IsNullOrEmpty(textToTranslate))
             {
@@ -63,8 +63,7 @@ namespace MicrosoftTranslateApp.Traslators
             }
 
             // send HTTP request to perform the translation
-            string endpoint = string.Format(TEXT_TRANSLATION_API_ENDPOINT, "translate");
-            string uri = string.Format(endpoint + "&from={0}&to={1}", sourceLang, targetLang);
+            string uri = ApiUriCreator("translate", new Dictionary<string, string> { { "from", sourceLang }, { "to", targetLang } });
 
             var body = new
             {
@@ -83,8 +82,8 @@ namespace MicrosoftTranslateApp.Traslators
                 request.Headers.Add("Ocp-Apim-Subscription-Region", "westeurope");
                 request.Headers.Add("X-ClientTraceId", Guid.NewGuid().ToString());
 
-                var response = await client.SendAsync(request);
-                var responseBody = await response.Content.ReadAsStringAsync();
+                HttpResponseMessage response = client.SendAsync(request).Result;
+                string responseBody = response.Content.ReadAsStringAsync().Result;
 
                 var result = JsonConvert.DeserializeObject<List<Dictionary<string, List<Dictionary<string, string>>>>>(responseBody);
                 var translation = result[0]["translations"][0]["text"];
@@ -100,7 +99,7 @@ namespace MicrosoftTranslateApp.Traslators
         /// <param name="targetLang"></param>
         /// <param name="textToTranslate"></param>
         /// <returns></returns>
-        public Task<string> Translate(string targetLang, string textToTranslate)
+        public string Translate(string targetLang, string textToTranslate)
         {
             string detectUri = ApiUriCreator("detect");
 

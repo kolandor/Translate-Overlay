@@ -63,6 +63,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Resources\Keys.cs" />
     <Compile Include="Traslators\ITranslator.cs" />
     <Compile Include="Traslators\MicrosoftTranslator.cs" />
     <Page Include="MainWindow.xaml">
