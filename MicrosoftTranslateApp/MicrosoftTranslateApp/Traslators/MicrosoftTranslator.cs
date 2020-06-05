@@ -4,6 +4,8 @@ using System.Net;
 using System.IO;
 using Newtonsoft.Json;
 using System;
+using System.Net.Http;
+using System.Threading.Tasks;
 
 namespace MicrosoftTranslateApp.Traslators
 {
@@ -53,9 +55,43 @@ namespace MicrosoftTranslateApp.Traslators
         /// <param name="targetLang"></param>
         /// <param name="textToTranslate"></param>
         /// <returns></returns>
-        public string Translate(string sourceLang, string targetLang, string textToTranslate)
+        public async Task<string> Translate(string sourceLang, string targetLang, string textToTranslate)
         {
-            throw new System.NotImplementedException();
+            if (string.IsNullOrEmpty(textToTranslate))
+            {
+                return string.Empty;
+            }
+
+            // send HTTP request to perform the translation
+            string endpoint = string.Format(TEXT_TRANSLATION_API_ENDPOINT, "translate");
+            string uri = string.Format(endpoint + "&from={0}&to={1}", sourceLang, targetLang);
+
+            var body = new
+            {
+                Text = textToTranslate
+            };
+
+            var requestBody = JsonConvert.SerializeObject(body);
+
+            using (var client = new HttpClient())
+            using (var request = new HttpRequestMessage())
+            {
+                request.Method = HttpMethod.Post;
+                request.RequestUri = new Uri(uri);
+                request.Content = new StringContent(requestBody, Encoding.UTF8, "application/json");
+                request.Headers.Add("Ocp-Apim-Subscription-Key", API_KEY);
+                request.Headers.Add("Ocp-Apim-Subscription-Region", "westeurope");
+                request.Headers.Add("X-ClientTraceId", Guid.NewGuid().ToString());
+
+                var response = await client.SendAsync(request);
+                var responseBody = await response.Content.ReadAsStringAsync();
+
+                var result = JsonConvert.DeserializeObject<List<Dictionary<string, List<Dictionary<string, string>>>>>(responseBody);
+                var translation = result[0]["translations"][0]["text"];
+
+                // Update the translation field
+                return translation;
+            }
         }
 
         /// <summary>
@@ -64,7 +100,7 @@ namespace MicrosoftTranslateApp.Traslators
         /// <param name="targetLang"></param>
         /// <param name="textToTranslate"></param>
         /// <returns></returns>
-        public string Translate(string targetLang, string textToTranslate)
+        public Task<string> Translate(string targetLang, string textToTranslate)
         {
             string detectUri = ApiUriCreator("detect");
 
@@ -126,5 +162,6 @@ namespace MicrosoftTranslateApp.Traslators
 
             return sb.ToString();
         }
+
     }
 }

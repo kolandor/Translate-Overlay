@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace MicrosoftTranslateApp.Traslators
 {
@@ -16,7 +17,7 @@ namespace MicrosoftTranslateApp.Traslators
         /// <param name="targetLang"></param>
         /// <param name="textToTranslate"></param>
         /// <returns></returns>
-        string Translate(string sourceLang, string targetLang, string textToTranslate);
+        Task<string> Translate(string sourceLang, string targetLang, string textToTranslate);
 
         /// <summary>
         /// Auto detect source language
@@ -24,6 +25,6 @@ namespace MicrosoftTranslateApp.Traslators
         /// <param name="targetLang"></param>
         /// <param name="textToTranslate"></param>
         /// <returns></returns>
-        string Translate(string targetLang, string textToTranslate);
+        Task<string> Translate(string targetLang, string textToTranslate);
     }
 }
