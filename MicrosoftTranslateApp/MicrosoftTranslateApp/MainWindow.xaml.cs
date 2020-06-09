@@ -19,7 +19,7 @@ namespace MicrosoftTranslateApp
     {
         const string BING_SPELL_CHECK_API_ENDPOINT = "https://westus.api.cognitive.microsoft.com/bing/v7.0/spellcheck/";
 
-        MicrosoftTranslator translator;
+        ITranslator translator;
 
         // Dictionary to map language codes from friendly name (sorted case-insensitively on language name)
         private SortedDictionary<string, string> languageCodesAndTitles =
@@ -50,7 +50,7 @@ namespace MicrosoftTranslateApp
                 // Start GUI
                 InitializeComponent();
 
-                translator = new MicrosoftTranslator(Keys.CognitiveServicesKey);
+                translator = new GoogleTranslator();//new MicrosoftTranslator(Keys.CognitiveServicesKey);
 
                 // Populate drop-downs with values from GetLanguagesForTranslate
                 PopulateLanguageMenus();
