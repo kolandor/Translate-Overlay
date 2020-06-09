@@ -8,15 +8,10 @@ namespace MicrosoftTranslateApp.Traslators
     {
         private readonly TranslationClient translator;
 
-        public GoogleTranslator()
+        public GoogleTranslator(string googleJsonApi)
         {
-            GoogleCredential credential = GoogleCredential.FromFile(@"C:\Repos\Translate-Overlay\MicrosoftTranslateApp\MicrosoftTranslateApp\Resources\My Transtate Project-6825cc43e735.json");
+            GoogleCredential credential = GoogleCredential.FromJson(googleJsonApi);
             translator = TranslationClient.Create(credential);
-            /*var response = translator.TranslateText(
-            text: "Hello World.",
-            targetLanguage: "ru",  // Russian
-            sourceLanguage: "en");  // English
-            string s = response.TranslatedText;*/
         }
 
         public SortedDictionary<string, string> Languages
@@ -36,7 +31,11 @@ namespace MicrosoftTranslateApp.Traslators
 
         public string Translate(string sourceLang, string targetLang, string textToTranslate)
         {
-            throw new System.NotImplementedException();
+            var response = translator.TranslateText(
+            text: textToTranslate,
+            targetLanguage: targetLang,
+            sourceLanguage: sourceLang);
+            return response.TranslatedText;
         }
 
         public string Translate(string targetLang, string textToTranslate)

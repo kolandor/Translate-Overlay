@@ -8,7 +8,6 @@ using System.Linq;
 using System.Text;
 using Newtonsoft.Json;
 using MicrosoftTranslateApp.Traslators;
-using MicrosoftTranslateApp.resources;
 
 namespace MicrosoftTranslateApp
 {
@@ -50,7 +49,7 @@ namespace MicrosoftTranslateApp
                 // Start GUI
                 InitializeComponent();
 
-                translator = new GoogleTranslator();//new MicrosoftTranslator(Keys.CognitiveServicesKey);
+                translator = new GoogleTranslator(MicrosoftTranslateApp.Resources.ResourcesKeys.GoogleJson);
 
                 // Populate drop-downs with values from GetLanguagesForTranslate
                 PopulateLanguageMenus();
@@ -71,8 +70,10 @@ namespace MicrosoftTranslateApp
             }
 
             // Set default languages
-            FromLanguageComboBox.SelectedItem = "Detect";
-            ToLanguageComboBox.SelectedItem = "English";
+            /*FromLanguageComboBox.SelectedItem = "Detect";
+            ToLanguageComboBox.SelectedItem = "English";*/
+            FromLanguageComboBox.SelectedIndex = 0;
+            ToLanguageComboBox.SelectedIndex = 0;
         }
 
         // NOTE:
