@@ -29,28 +29,17 @@ namespace MicrosoftTranslateApp
             // Display a message if unexpected error is encountered
             AppDomain.CurrentDomain.UnhandledException += new UnhandledExceptionEventHandler(HandleExceptions);
 
-            /*if (COGNITIVE_SERVICES_KEY.Length != 32)
-            {
-                MessageBox.Show("One or more invalid API subscription keys.\n\n" +
-                    "Put your keys in the *_API_SUBSCRIPTION_KEY variables in MainWindow.xaml.cs.",
-                    "Invalid Subscription Key(s)", MessageBoxButton.OK, MessageBoxImage.Error);
-                System.Windows.Application.Current.Shutdown();
-            }
-            else*/
-            {
-                // Start GUI
-                InitializeComponent();
+            // Start GUI
+            InitializeComponent();
 
-                translator = new GoogleTranslator(MicrosoftTranslateApp.Resources.ResourcesKeys.GoogleJson);
+            translator = new GoogleTranslator(MicrosoftTranslateApp.Resources.ResourcesKeys.GoogleJson);
 
-                // Populate drop-downs with values from GetLanguagesForTranslate
-                PopulateLanguageMenus();
-            }
+            // Populate drop-downs with values from GetLanguagesForTranslate
+            PopulateLanguageMenus();
         }
         
         private void PopulateLanguageMenus()
         {
-            // Add option to automatically detect the source language
             FromLanguageComboBox.Items.Add("Detect");
 
             languageCodesAndTitles = translator.Languages;
@@ -61,9 +50,6 @@ namespace MicrosoftTranslateApp
                 ToLanguageComboBox.Items.Add(menuItem);
             }
 
-            // Set default languages
-            /*FromLanguageComboBox.SelectedItem = "Detect";
-            ToLanguageComboBox.SelectedItem = "English";*/
             FromLanguageComboBox.SelectedIndex = 0;
             ToLanguageComboBox.SelectedIndex = 0;
         }
