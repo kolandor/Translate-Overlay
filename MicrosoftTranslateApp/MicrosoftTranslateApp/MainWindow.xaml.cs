@@ -1,12 +1,6 @@
 ﻿using System;
 using System.Windows;
-using System.Net;
-using System.Net.Http;
-using System.IO;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Newtonsoft.Json;
 using MicrosoftTranslateApp.Traslators;
 
 namespace MicrosoftTranslateApp
@@ -20,9 +14,7 @@ namespace MicrosoftTranslateApp
 
         ITranslator translator;
 
-        // Dictionary to map language codes from friendly name (sorted case-insensitively on language name)
-        private SortedDictionary<string, string> languageCodesAndTitles =
-            new SortedDictionary<string, string>(Comparer<string>.Create((a, b) => string.Compare(a, b, true)));
+        private SortedDictionary<string, string> languageCodesAndTitles;
 
         // Global exception handler to display error message and exit
         private static void HandleExceptions(object sender, UnhandledExceptionEventArgs args)

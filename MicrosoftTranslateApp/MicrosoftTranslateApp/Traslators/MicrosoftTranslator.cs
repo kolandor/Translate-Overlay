@@ -27,7 +27,7 @@ namespace MicrosoftTranslateApp.Traslators
         {
             get
             {
-                SortedDictionary<string, string> languageCodesAndTitles = new SortedDictionary<string, string>();
+                SortedDictionary<string, string> languageCodesAndTitles = new SortedDictionary<string, string>(Comparer<string>.Create((a, b) => string.Compare(a, b, true)));
 
                 string uri = ApiUriCreator("languages", new Dictionary<string, string> { { "scope", "translation" } });
                 WebRequest WebRequest = WebRequest.Create(uri);
