@@ -2,6 +2,8 @@
 using System.Windows;
 using System.Collections.Generic;
 using MicrosoftTranslateApp.Traslators;
+using MicrosoftTranslateApp.SpeechToText;
+using Microsoft.Win32;
 
 namespace MicrosoftTranslateApp
 {
@@ -71,6 +73,19 @@ namespace MicrosoftTranslateApp
             {
                 MessageBox.Show(ex.Message);
             }
+        }
+
+        private void TranslateFileButton_Click(object sender, EventArgs e)
+        {
+            OpenFileDialog open = new OpenFileDialog();
+
+            open.ShowDialog();
+
+            string filePath = open.FileName;
+
+            ISpeechToText speechToText = new WindowsSpeechToText();
+
+            TextTranslated.Text = speechToText.RecognizeFile(filePath);
         }
     }
 }

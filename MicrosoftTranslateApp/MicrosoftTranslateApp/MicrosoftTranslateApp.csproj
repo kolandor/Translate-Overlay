@@ -104,6 +104,8 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>ResourcesKeys.resx</DependentUpon>
     </Compile>
+    <Compile Include="SpeechToText\ISpeechToText.cs" />
+    <Compile Include="SpeechToText\WindowsSpeechToText.cs" />
     <Compile Include="Traslators\GoogleTranslator.cs" />
     <Compile Include="Traslators\ITranslator.cs" />
     <Compile Include="Traslators\MicrosoftTranslator.cs" />

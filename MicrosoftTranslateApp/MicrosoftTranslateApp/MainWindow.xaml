@@ -42,7 +42,7 @@
 
         <StackPanel HorizontalAlignment="Center" Orientation="Horizontal" Grid.Column="0" Grid.Row="2">
             <Button x:Name="TranslateButton" Content="Translate" HorizontalAlignment="Center"  VerticalAlignment="Center" Width="114" Height="31" Click="TranslateButton_Click" FontSize="14" TabIndex="4" IsDefault="True"/>
-            <Button x:Name="TranslateFileButton" Margin="10,0,0,0" Content="Translate file..." HorizontalAlignment="Center"  VerticalAlignment="Center" Width="114" Height="31" Click="TranslateButton_Click" FontSize="14" TabIndex="4" IsDefault="True"/>
+            <Button x:Name="TranslateFileButton" Margin="10,0,0,0" Content="Translate file..." HorizontalAlignment="Center"  VerticalAlignment="Center" Width="114" Height="31" Click="TranslateFileButton_Click" FontSize="14" TabIndex="4" IsDefault="True"/>
         </StackPanel>
 
         <Label x:Name="DetectedLanguageLabel" Content="Autodetected language is displayed here." 
