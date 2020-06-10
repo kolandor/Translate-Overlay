@@ -40,7 +40,10 @@ namespace MicrosoftTranslateApp.Traslators
 
                     foreach (var kv in languages)
                     {
-                        languageCodesAndTitles.Add(kv.Value["name"], kv.Key);
+                        if (!languageCodesAndTitles.ContainsKey(kv.Value["name"]))
+                        {
+                            languageCodesAndTitles.Add(kv.Value["name"], kv.Key);
+                        }
                     }
                 }
 

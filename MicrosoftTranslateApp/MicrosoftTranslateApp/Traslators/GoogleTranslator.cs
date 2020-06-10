@@ -20,9 +20,12 @@ namespace MicrosoftTranslateApp.Traslators
             {
                 SortedDictionary<string, string> languageCodesAndTitles = new SortedDictionary<string, string>(Comparer<string>.Create((a, b) => string.Compare(a, b, true)));
 
-                foreach (var kv in translator.ListLanguages())
+                foreach (Language kv in translator.ListLanguages("en"))
                 {
-                    languageCodesAndTitles.Add(kv.Code, kv.Code);
+                    if (!languageCodesAndTitles.ContainsKey(kv.Name))
+                    {
+                        languageCodesAndTitles.Add(kv.Name, kv.Code);
+                    }
                 }
 
                 return languageCodesAndTitles;
