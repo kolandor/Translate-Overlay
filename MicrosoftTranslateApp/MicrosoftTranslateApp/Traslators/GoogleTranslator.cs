@@ -33,14 +33,13 @@ namespace MicrosoftTranslateApp.Traslators
         {
             var response = translator.TranslateText(
             text: textToTranslate,
-            targetLanguage: targetLang,
-            sourceLanguage: sourceLang);
+            targetLanguage: targetLang);
             return response.TranslatedText;
         }
 
         public string Translate(string targetLang, string textToTranslate)
         {
-            throw new System.NotImplementedException();
+            return Translate(null, targetLang, textToTranslate);
         }
     }
 }

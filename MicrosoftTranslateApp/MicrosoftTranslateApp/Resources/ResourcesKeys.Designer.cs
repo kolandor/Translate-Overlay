@@ -64,8 +64,8 @@ namespace MicrosoftTranslateApp.Resources {
         ///   Ищет локализованную строку, похожую на {
         ///  &quot;type&quot;: &quot;service_account&quot;,
         ///  &quot;project_id&quot;: &quot;my-transtate-pro-1591370724553&quot;,
-        ///  &quot;private_key_id&quot;: &quot;6825cc43e735e28a280c156de62e424a2b192a74&quot;,
-        ///  &quot;private_key&quot;: &quot;-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQCZXvJY2iLo1oVL\n79+LpmDVllPVLbCo6CD6bumz+8DSitraW5zyz7PIJ/fE/goHCam0CdbtNwwAwCq1\np8QBmu2/Is1gCG0HA789hbxgEDfdv9EavYbfyE9mx5SVeLPK/t1LfbLMyZlNhytk\n4AS25ffS7K2DNOOpWMVU1Ub+ddcooBysswWaGQrjlyoChIo3Q0iKoPuiUEgcxRVf\nXRjFUOVGczIJeSONeizTBh5nD3qcIYmkTEFMPgBg3nI/9+E8QkxH [остаток строки не уместился]&quot;;.
+        ///  &quot;private_key_id&quot;: &quot;1c56d30e6f09ea3465055e772c27d2eed3db5b10&quot;,
+        ///  &quot;private_key&quot;: &quot;-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQDObj4Fmqp47XCx\n1bs8atg8MPgTVcsqcSu03Ik9Bdq7rCeh27DfiQfenzqvGYBsOfqp5iqDZBU/EOQa\nY/EwM9iXZYAaM+YMDFdR3OdG8f68W87zMbCZ0EG7IuIoNmfHg8CLs51vCDlnvaA7\nCRXtCDc2DTFCyqsrVu5fhMZon42qQwZkFsCaqiWgKjnPbrCP5Dk0RL1RTCxoahhM\n92J2D1vPlbmNLJ0vGIwxSkai3HO8hU0m0IRpHHOFOerSuMHViyOY [остаток строки не уместился]&quot;;.
         /// </summary>
         internal static string GoogleJson {
             get {
