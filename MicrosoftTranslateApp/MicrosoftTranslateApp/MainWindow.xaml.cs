@@ -23,18 +23,15 @@ namespace MicrosoftTranslateApp
             MessageBox.Show("Caught " + e.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             System.Windows.Application.Current.Shutdown();
         }
-        // MainWindow constructor
+
         public MainWindow()
         {
-            // Display a message if unexpected error is encountered
             AppDomain.CurrentDomain.UnhandledException += new UnhandledExceptionEventHandler(HandleExceptions);
 
-            // Start GUI
             InitializeComponent();
 
             translator = new GoogleTranslator(MicrosoftTranslateApp.Resources.ResourcesKeys.GoogleJson);
 
-            // Populate drop-downs with values from GetLanguagesForTranslate
             PopulateLanguageMenus();
         }
         
@@ -122,7 +119,6 @@ namespace MicrosoftTranslateApp
                 string fromLanguage = FromLanguageComboBox.SelectedValue.ToString();
                 string fromLanguageCode;
 
-                // auto-detect source language if requested
                 if (fromLanguage == "Detect")
                 {
                     TextTranslated.Text = translator.Translate(toLanguageCode, textToTranslate);
