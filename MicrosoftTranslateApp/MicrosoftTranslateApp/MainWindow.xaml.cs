@@ -34,7 +34,7 @@ namespace MicrosoftTranslateApp
 
             PopulateLanguageMenus();
         }
-        
+
         private void PopulateLanguageMenus()
         {
             FromLanguageComboBox.Items.Add("Detect");
@@ -56,18 +56,8 @@ namespace MicrosoftTranslateApp
             try
             {
                 string textToTranslate = TextToTranslate.Text.Trim();
-                string toLanguageCode = languageCodesAndTitles[ToLanguageComboBox.SelectedValue.ToString()];
-                string fromLanguage = FromLanguageComboBox.SelectedValue.ToString();
-                string fromLanguageCode;
 
-                if (fromLanguage == "Detect")
-                {
-                    TextTranslated.Text = translator.Translate(toLanguageCode, textToTranslate);
-                }
-                else
-                {
-                    TextTranslated.Text = translator.Translate(fromLanguage, toLanguageCode, textToTranslate);
-                }
+                TextTranslated.Text = Translate(textToTranslate);
             }
             catch (Exception ex)
             {
@@ -85,19 +75,34 @@ namespace MicrosoftTranslateApp
 
                 string filePath = open.FileName;
 
-                if(string.IsNullOrEmpty(open.FileName))
+                if (string.IsNullOrEmpty(open.FileName))
                 {
                     return;
                 }
 
                 ISpeechToText speechToText = new WindowsSpeechToText();
 
-                TextTranslated.Text = speechToText.RecognizeFile(filePath);
+                string recognizedText = speechToText.RecognizeFile(filePath);
+
+                TextTranslated.Text = Translate(recognizedText);
             }
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message);
             }
+        }
+
+        private string Translate(string textToTranslate)
+        {
+            string toLanguageCode = languageCodesAndTitles[ToLanguageComboBox.SelectedValue.ToString()];
+            string fromLanguage = FromLanguageComboBox.SelectedValue.ToString();
+
+            if (fromLanguage == "Detect")
+            {
+                return translator.Translate(toLanguageCode, textToTranslate);
+            }
+
+            return translator.Translate(fromLanguage, toLanguageCode, textToTranslate);
         }
     }
 }
