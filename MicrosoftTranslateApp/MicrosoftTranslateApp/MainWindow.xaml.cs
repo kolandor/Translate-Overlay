@@ -77,15 +77,27 @@ namespace MicrosoftTranslateApp
 
         private void TranslateFileButton_Click(object sender, EventArgs e)
         {
-            OpenFileDialog open = new OpenFileDialog();
+            try
+            {
+                OpenFileDialog open = new OpenFileDialog();
 
-            open.ShowDialog();
+                open.ShowDialog();
 
-            string filePath = open.FileName;
+                string filePath = open.FileName;
 
-            ISpeechToText speechToText = new WindowsSpeechToText();
+                if(string.IsNullOrEmpty(open.FileName))
+                {
+                    return;
+                }
 
-            TextTranslated.Text = speechToText.RecognizeFile(filePath);
+                ISpeechToText speechToText = new WindowsSpeechToText();
+
+                TextTranslated.Text = speechToText.RecognizeFile(filePath);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
         }
     }
 }
