@@ -83,6 +83,12 @@ namespace MicrosoftTranslateApp
                     return;
                 }
 
+                if(recognizeThread != null)
+                {
+                    recognizeThread.Abort();
+                    recognizeThread = null;
+                }
+
                 ISpeechToText speechToText = new WindowsSpeechToText();
 
                 recognizeThread = new Thread(() =>
