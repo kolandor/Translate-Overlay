@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using MicrosoftTranslateApp.Traslators;
 using MicrosoftTranslateApp.SpeechToText;
 using Microsoft.Win32;
+using System.Threading;
 
 namespace MicrosoftTranslateApp
 {
@@ -12,6 +13,8 @@ namespace MicrosoftTranslateApp
     /// </summary>
     public partial class MainWindow : Window
     {
+        Thread recognizeThread = null;
+
         ITranslator translator;
 
         private SortedDictionary<string, string> languageCodesAndTitles;
@@ -82,9 +85,16 @@ namespace MicrosoftTranslateApp
 
                 ISpeechToText speechToText = new WindowsSpeechToText();
 
-                string recognizedText = speechToText.RecognizeFile(filePath);
+                recognizeThread = new Thread(() =>
+                {
+                    string recognizedText = speechToText.RecognizeFile(filePath);
 
-                TextTranslated.Text = Translate(recognizedText);
+                    Dispatcher.Invoke(() => TextTranslated.Text = Translate(recognizedText));
+
+                    recognizeThread = null;
+                });
+
+                recognizeThread.Start();
             }
             catch (Exception ex)
             {
